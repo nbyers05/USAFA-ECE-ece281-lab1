@@ -11,8 +11,8 @@
 --| ---------------------------------------------------------------------------
 --|
 --| FILENAME      : thirtyOneDayMonth.vhd
---| AUTHOR(S)     : Capt Dan Johnson, ***Your Name Here***
---| CREATED       : 12/12/2019 Last Modified 06/24/2020
+--| AUTHOR(S)     : Capt Dan Johnson, *C3C Nolan Byers
+--| CREATED       : 12/12/2019 Last Modified 02/5/2026
 --| DESCRIPTION   :  This file implements the thirtyOneDaMonth lab.  Using a 4
 --| switch input, the circuit will light up whenever the 4 switches represent a
 --| month with 31 days
@@ -55,25 +55,49 @@ library ieee;
 -- entity name should match filename, this has been filled out for you  
 entity thirtyOneDayMonth is 
   port(
-	i_A : in std_logic; -- one of four inputs
-	
-	
-	
-						-- output
-  );
+	i_A : in std_logic;  -- one of four inputs
+	i_B : in std_logic;
+	i_C : in std_logic;
+	i_D : in std_logic;
+	o_Y : out std_logic
+	);                   -- output
+
 end thirtyOneDayMonth;
 
 architecture thirtyOneDayMonth_arch of thirtyOneDayMonth is 
 	-- include components declarations and signals
 	
 	--signals internal to the architecture are declared and initialized such as w_sel
-  
+    signal w_sel : std_logic_vector (2 downto 0); -- MUX sel
+    signal D_IN  : std_logic_vector (7 downto 0);
+    
 begin
 	-- CONCURRENT STATEMENTS---------------------------------------
 	--assigning names to reflect original schematics (for ease of understanding if you wish to)
 	w_sel(0) <= i_C;	-- one
 	--finish assigning signals
+	w_sel(1) <= i_B;
+	w_sel(2) <= i_A;
 	
+      D_IN(0) <= i_D;
+      D_IN(1) <= i_D;
+      D_IN(2) <= i_D;
+      D_IN(3) <= i_D;
+    
+      D_IN(4) <= not i_D;
+      D_IN(5) <= not i_D;
+      D_IN(6) <= not i_D;
+      D_IN(7) <= not i_D;
 	--enter your logic here to implement the mux.  See VHDL reference sheet for MUX syntax.	
+  o_Y <= D_IN(0) when (w_sel = "000") else
+	     D_IN(1) when (w_sel = "001") else
+	     D_IN(2) when (w_sel = "010") else
+	     D_IN(3) when (w_sel = "011") else
+	     D_IN(4) when (w_sel = "100") else
+	     D_IN(5) when (w_sel = "101") else
+	     D_IN(6) when (w_sel = "110") else
+	     D_IN(7) when (w_sel = "111") else
+	     '0';
+
 	---------------------------------------------------------------	
 end thirtyOneDayMonth_arch;
